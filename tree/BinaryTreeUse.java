@@ -159,8 +159,17 @@ public class BinaryTreeUse {
 		printNodeAtDepthK(root.left, k-1);
 		printNodeAtDepthK(root.right, k-1);
 	}
+	public static void replaceDataWithHeight(BinaryTree<Integer> root,int level) {
+		if(root==null) {
+			return;
+		}
+		root.data=level;
+		replaceDataWithHeight(root.left, level+1);
+		replaceDataWithHeight(root.right, level+1);
+	}
 	
-	public static void printNodeWithSibling(BinaryTree<Integer> root) {
+	
+	public static void printNodeWithoutSibling(BinaryTree<Integer> root) {
 		if(root==null) {
 			return ;
 		}
@@ -170,13 +179,13 @@ public class BinaryTreeUse {
 		else if(root.left!=null && root.right==null) {
 			System.out.print(root.left.data+" ");
 		}
-		printNodeWithSibling(root.left);
-		printNodeWithSibling(root.right);
+		printNodeWithoutSibling(root.left);
+		printNodeWithoutSibling(root.right);
 	}
 	
 	public static BinaryTree<Integer> removeLeafNode(BinaryTree<Integer> root){
 		if(root==null) {
-			return root;
+			return null;
 		}
 		if(root.left==null && root.right==null) {
 			return null;
@@ -216,20 +225,20 @@ public class BinaryTreeUse {
 	public static BalancedTreeReturn isBalancedBetter(BinaryTree<Integer> root) {
 		if(root==null) {
 			int height=0;
-			boolean isBal=true;
+			boolean isBalanced=true;
 			BalancedTreeReturn ans=new BalancedTreeReturn();
 			ans.height=height;
-			ans.isBalanced=isBal;
+			ans.isBalanced=isBalanced;
 			return ans;
 		}
 		BalancedTreeReturn leftOutput=isBalancedBetter(root.left);
 		BalancedTreeReturn rightOutput=isBalancedBetter(root.right);
-		int height=Math.max(leftOutput.height, rightOutput.height)+1;
-		boolean isBal=true;
-		if(Math.abs(leftOutput.height-rightOutput.height)>1) {
+		Boolean isBal=true;
+		int height=1+Math.max(leftOutput.height, rightOutput.height);
+		if(!leftOutput.isBalanced||!rightOutput.isBalanced) {
 			isBal=false;
 		}
-		if(!leftOutput.isBalanced || !rightOutput.isBalanced) {
+		if(Math.abs(leftOutput.height-rightOutput.height)>1) {
 			isBal=false;
 		}
 		BalancedTreeReturn ans=new BalancedTreeReturn();
@@ -250,20 +259,20 @@ public class BinaryTreeUse {
 	
 	public static Pair diameterBetter(BinaryTree<Integer> root) {
 		if(root==null) {
-			int diameter=0;
-			int height=0;
-			Pair pair=new Pair(diameter,height);
-			return pair;
+			Pair ans=new Pair(0, 0);
+			return ans;
 		}
-		Pair leftPair=diameterBetter(root.left);
-		Pair rightPair=diameterBetter(root.right);
-		int leftDiaamter=leftPair.diameter;
-		int rightDiamter=rightPair.diameter;
-		int dis=leftPair.height+rightPair.height+1;
-		int diameter=Math.max(Math.max(rightDiamter, leftDiaamter), dis);
-		int height=Math.max(leftPair.height,rightPair.height)+1;
-		Pair pair=new Pair(diameter, height);
-		return pair;
+		Pair leftOutput=diameterBetter(root.left);
+		Pair rightOutput=diameterBetter(root.right);
+		int leftDiameter=leftOutput.diameter;
+		int rightDiameter=rightOutput.diameter;
+		int height=Math.max(leftOutput.height, rightOutput.height)+1;
+		int distance=leftOutput.height+rightOutput.height+1;
+		int diameter=Math.max(rightDiameter, Math.max(leftDiameter, distance));
+		
+		Pair ans=new Pair(diameter,height);
+		return ans;
+		
 	}
 	
 	public static BinaryTree<Integer> takeinputLevelwise(){
@@ -604,20 +613,7 @@ public class BinaryTreeUse {
 	
 	
 	
-//	public static PairofNode createSortedLL(BinaryTree<Integer> root) {
-//		if(root==null) {
-//			PairofNode pair=new PairofNode();
-//			return pair;
-//		}
-//		LinkedList<Integer> newnode=new LinkedListNode<Integer>(root.data);
-//		
-//		PairofNode leftTree=createSortedLL(root.left);
-//		PairofNode rightTree=createSortedLL(root.right);
-//		PairofNode pair =new PairofNode();
-//		if(leftTree.tail!=null) {
-//			
-//		}
-//	}
+
 	
 	public static int replaceRootWithSumOfLarger(BinaryTree<Integer>root,int sum){
 		if(root==null) {
@@ -699,9 +695,7 @@ public class BinaryTreeUse {
 		}
 		return null;
 	}
-//	public static ArrayList<Node<Integer>> constructLLforEachLevel(BinaryTree<Integer> root){
-//		
-//	}
+
 	
 	public static LBstReturn LargestBST(BinaryTree<Integer> root) {
 		if(root==null) {
@@ -772,24 +766,18 @@ public class BinaryTreeUse {
 //	root.left=right;
 //	right.right=right1;
 //	left.left=left1;
-//		BinaryTree<Integer> root=takeInputBetter(true,0,true);
-		BinaryTree<Integer> root=takeinputLevelwise();
+//	BinaryTree<Integer> root=takeInputBetter(true,0,true);
+	BinaryTree<Integer> root=takeinputLevelwise();
 	printLevewise(root);
-//	System.out.println(countNode(root));
-//	postorder(root);
-//	System.out.println(largestNode(root));
-//	System.out.println(countLarger(root, 10));
-//	System.out.println(height(root));
-//	System.out.println(countLeaves(root));
 //	printNodeAtDepthK(root, 2);
-//	printNodeWithSibling(root);
+//	printNodeWithoutSibling(root);
 //	root=mirrorTree(root);
 //	printTreeDetailed(root);
-//	BalancedTreeReturn ans=isBalancedBetter(root);
-//	System.out.println(ans.isBalanced);
+	BalancedTreeReturn ans=isBalancedBetter(root);
+	System.out.println(ans.isBalanced);
 //	System.out.println(diameter(root));
-//	Pair p=diameterBetter(root);
-//	System.out.println(p.diameter +" "+p.height);
+	Pair p=diameterBetter(root);
+	System.out.println(p.diameter +" "+p.height);
 //	int inorder[]= {4 ,2, 7 ,5 ,1 ,8 ,6,3};
 //	int postorder[]= {4, 7, 5, 2 ,8 ,6 ,3 ,1};
 //	BinaryTree<Integer> root1=constTreeFromPreInorder(inorder,preorder,0,inorder.length-1,0,preorder.length-1);
@@ -813,6 +801,9 @@ public class BinaryTreeUse {
 //	LBstReturn ans=LargestBST(root);
 //	System.out.println(ans.height);
 //	System.out.println(symetric(root));
-	System.out.println(isSumTree(root));
+//	System.out.println(isSumTree(root));
+//	replaceDataWithHeight(root, 0);
+//	removeLeafNode(root);
+	printLevewise(root);
 }
 }

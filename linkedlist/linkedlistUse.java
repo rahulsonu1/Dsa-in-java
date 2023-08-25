@@ -489,6 +489,8 @@ public class linkedlistUse {
 	}
 	
 	
+	
+	
 	public static void main(String[] args) {
 		Node <Integer> head=takeInput();
 //		Node <Integer> head1=takeInput();
@@ -514,8 +516,9 @@ public class linkedlistUse {
 //		head=rotate(head, 4);
 //		head=moveLasttoHead(head);
 //		head=reverseTwo(head,1,2);
-		DoubleNode ans=reverseHeadTail(head);
-		print(ans.head);
+//		DoubleNode ans=reverseHeadTail(head);
+		Node<Integer>ans=removeElmement(head, 3);
+		print(ans);
 	}
 
 }

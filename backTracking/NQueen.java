@@ -3,7 +3,7 @@ package backTracking;
 public class NQueen {
 
 	public static void main(String[] args) {
-		int n=1000;
+		int n=5;
 		int board[][]=new int[n][n];
 		for(int i=0;i<n;i++) {
 			for(int j=0;j<n;j++) {

@@ -1,6 +1,7 @@
 package stack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Stack;
 
 public class StackCollection {
@@ -203,7 +204,7 @@ public class StackCollection {
 		stack.push(arr[0]);
 		list.add(-1);
 		for(int i=1;i<arr.length;i++) {
-			while(!stack.isEmpty() && arr[i]<=stack.peek()) {
+			while(!stack.isEmpty() && arr[i]>=stack.peek()) {
 				stack.pop();	
 			}
 			if(stack.isEmpty()) {
@@ -218,10 +219,7 @@ public class StackCollection {
 		System.out.println(list);
 	}
 	
-//	public static int prefixEval(String s) {
-//		
-//	}
-	
+		
 	public static String Reduce(String s) {
 		Stack<Character> stack=new Stack<>();
 		String newS="";
@@ -239,10 +237,38 @@ public class StackCollection {
 			}
 		}
 		return newS;
-		
+	
 	}
+	
+	public static void nextGreater(int arr[]) {
+		Stack<Integer>stack=new Stack<>();
+		ArrayList<Integer>list=new ArrayList<>();
+		int n=arr.length;
+		stack.push(arr[n-1]);
+		list.add(-1);
+		for(int i=n-2;i>=0;i--) {
+			while(!stack.isEmpty() && arr[i]>stack.peek()) {
+				stack.pop();
+			}
+			if(stack.isEmpty()) {
+				list.add(-1);
+				stack.push(arr[i]);
+			}
+			else {
+				list.add(stack.peek());
+				stack.push(arr[i]);
+			}
+		}
+		Collections.reverse(list);
+		System.out.println(list);
+	}
+	
+	
+
+	
 	public static void main(String[] args) {
 		String s= "geegsforgeeeks";
+		int arr[]= {5,15,10,8,6,12,9,18};
 //	int count=minimumReversal(s);
 //		System.out.println(count);
 //		int add=minAdd(s);
@@ -251,7 +277,8 @@ public class StackCollection {
 //		System.out.println(res);
 //		int arr[]= {1, 5, 0, 3, 4, 5};
 //		previousGreater(arr);
-		System.out.println(Reduce(s));
+		nextGreater(arr);
+//		System.out.println(Reduce(s));
 		
 //	}
 		
