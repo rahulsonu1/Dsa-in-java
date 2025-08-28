@@ -1,8 +1,10 @@
 package StringProblem;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.ArrayList;
 
 public class StringProblem {
 	
@@ -112,16 +114,37 @@ public class StringProblem {
 		return newSt;
 	}
 	
+	public static void dnaSequence(String s){
+		HashSet<String> set=new HashSet<>();
+		ArrayList<String>list=new ArrayList<>();
+		for(int i=0;i<=s.length()-10;i++) {
+			String sub=s.substring(i,i+10);
+			if(!set.contains(sub)) {
+	            set.add(sub);
+	        } else {
+	            if(!list.contains(sub)) { // avoid duplicates in output
+	                list.add(sub);
+	            }
+	        }
+			
+		}
+		System.out.println(list);
+		
+		
+		
+	}
+	
 	public static void main(String[] args) {
 		Scanner sc=new Scanner(System.in);
-		String s1="abc di li",s2="axc",s3="leetcode";
+		String s1="AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT",s2="axc",s3="leetcode";
 //		System.out.println(isSubsequence(s1, s2));
 //		System.out.println(anagram(s1, s2));
 //		System.out.println(leftmostRepeating(s1));
 //		System.out.println(leftMostRepeating1(s1));
 //		System.out.println(firstUnique(s3));
 //		System.out.println(appTwice(s1));
-		System.out.println(reverseWord(s1));
+//		System.out.println(reverseWord(s1));
+		dnaSequence(s1);
 		
 		
 	}
