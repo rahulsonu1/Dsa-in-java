@@ -1,4 +1,5 @@
 package linkedlist;
+import java.util.HashSet;
 import java.util.Scanner;
 public class linkedlistUse {
 	
@@ -245,6 +246,34 @@ public class linkedlistUse {
 		return heading;
 	}
 	
+	public static Node<Integer> mergeSortedBetter(Node<Integer> head1,Node<Integer> head2){
+		if(head1==null) {
+			return head1;
+		}
+		if(head2==null) {
+			return head2;
+		}
+		Node<Integer>dummy=new Node<Integer>(-1);
+		Node<Integer>tail=dummy;
+		while(head1!=null && head2!=null) {
+			if(head1.data<head2.data) {
+				tail.next=head1;
+				tail=tail.next;
+				head1=head1.next;
+			}else {
+				tail.next=head2;
+				tail=tail.next;
+				head2=head2.next;
+			}
+		}
+		if(head1!=null) {
+			tail.next=head1;
+		}else {
+			tail.next=head2;
+		}
+		return dummy.next;
+	}
+	
 	public static Node<Integer> midpoint(Node<Integer> head){
 		Node<Integer> slow=head;
 		Node<Integer> fast=head;
@@ -264,7 +293,7 @@ public class linkedlistUse {
 		midpart1.next=null;
 		Node<Integer> part1=mergeSort(head);
 		Node<Integer>part2=mergeSort(midpart2);
-		Node<Integer> heading=mergeSorted(part1, part2);
+		Node<Integer> heading=mergeSortedBetter(part1, part2);
 		return heading;
 		
 		
@@ -472,20 +501,192 @@ public class linkedlistUse {
 		smallHead.next=curr2;
 		return head;
 	}
-	public static DoubleNode reverseHeadTail(Node<Integer> head) {
-		if(head==null || head.next==null) {
-			DoubleNode ans=new DoubleNode();
-			ans.head=head;
-			ans.tail=head;
-			return ans;
+//	public static DoubleNode reverseHeadTail(Node<Integer> head) {
+//		if(head==null || head.next==null) {
+//			DoubleNode ans=new DoubleNode();
+//			ans.head=head;
+//			ans.tail=head;
+//			return ans;
+//		}
+//		DoubleNode smallans=reverseHeadTail(head.next);
+//		smallans.tail.next=head;
+//		head.next=null;
+//		DoubleNode ans=new DoubleNode();
+//		ans.head=smallans.head;
+//		ans.tail=head;
+//		return ans;
+//	}
+	
+	public static Node<Integer> removeDuplicate(Node<Integer> head){
+		Node<Integer> curr=head;
+		Node<Integer>prev=null;
+		HashSet<Integer>set=new HashSet<>();
+		while(curr!=null) {
+			if(set.contains(curr.data)) {
+				prev.next=curr.next;
+			}else {
+				set.add(curr.data);
+				prev=curr;
+			}
+			curr=curr.next;
 		}
-		DoubleNode smallans=reverseHeadTail(head.next);
-		smallans.tail.next=head;
+		return head;
+	}
+	
+	public static Node<Integer> sort012(Node<Integer> head){
+		int arr[]= {0,0,0};
+		Node<Integer> curr=head;
+		while(curr!=null) {
+			arr[curr.data]++;
+			curr=curr.next;
+		}
+		int index=0;
+		curr=head;
+		while(curr!=null) {
+			if(arr[index]==0) {
+				index++;
+			}else {
+				curr.data=index;
+				arr[index]--;
+				curr=curr.next;
+			}
+		}
+		return head;
+	}
+	
+	public static DoubleNode reverseLLHeadTail(Node<Integer> head) {
+		if(head==null||head.next==null) {
+			return new DoubleNode(head,head);
+		}
+		DoubleNode reversed=reverseLLHeadTail(head.next);
+		reversed.tail.next=head;
 		head.next=null;
-		DoubleNode ans=new DoubleNode();
-		ans.head=smallans.head;
-		ans.tail=head;
+		return new DoubleNode(reversed.head,head);
+	}
+	
+	public static Node<Integer> reorderList(Node<Integer> head){
+		Node<Integer> slow=head;
+		Node<Integer>fast=head;
+		while(fast!=null && fast.next!=null) {
+			slow=slow.next;
+			fast=fast.next.next;
+		}
+		Node<Integer>second=iReverse(slow.next);
+		slow.next=null;
+//		print(second);
+		Node<Integer>first=head;
+		while(second!=null) {
+			Node<Integer>firstNext=first.next;
+			Node<Integer>secondNext=second.next;
+			first.next=second;
+			second.next=firstNext;
+			first=firstNext;
+			second=secondNext;
+			
+		}
+		return head;
+	}
+	public static Node<Integer> removeRightSmaller(Node<Integer> head){
+		if(head==null||head.next==null) return head;
+		Node<Integer> reverse=iReverse(head);
+		Node<Integer> curr=reverse;
+		while(curr!=null && curr.next!=null) {
+			if(curr.data>curr.next.data) {
+				curr.next=curr.next.next;
+			}else {
+				curr=curr.next;
+			}
+		}
+		reverse=iReverse(reverse);
+		return reverse;
+	}
+	public static Node<Integer> addTwoNumber(Node<Integer> head1,Node<Integer> head2){
+		head1=iReverse(head1);
+		head2=iReverse(head2);
+		int carry=0;
+		Node<Integer> dummy=new Node<>(-1);
+		Node<Integer>tail=dummy;
+		while(head1!=null||head2!=null||carry!=0) {
+			int value1=head1!=null?head1.data:0;
+			int value2=head2!=null?head2.data:0;
+			int sum=(value1+value2+carry);
+			carry=sum/10;
+			Node<Integer> temp=new Node<>(sum%10);
+			tail.next=temp;
+			tail=tail.next;
+			if(head1!=null) head1=head1.next;
+			if(head2!=null) head2=head2.next;
+		}
+		Node<Integer>ans=iReverse(dummy.next);
 		return ans;
+
+	}
+	public static Node<Integer> doubleNumber(Node<Integer>head){
+		Node<Integer> reverse=iReverse(head);
+		Node<Integer> curr=reverse;
+		Node<Integer> prev=null;
+		int carry=0;
+		while(curr!=null) {
+			int value=curr.data*2+carry;
+			curr.data=value%10;
+			carry=value/10;
+			prev=curr;
+			curr=curr.next;
+		}
+		if(carry>0) {
+			Node<Integer> newNode=new Node<>(carry);
+			prev.next=newNode;
+		}
+		reverse=iReverse(reverse);
+		return reverse;
+		
+	}
+	public static Node<Integer> reverseKGroup(Node<Integer>head,int k){
+		if(!hasKElement(head, k)) return head;
+		Node<Integer> curr=head;
+		Node<Integer> prev=null;
+		Node<Integer> next=null;
+		int count=0;
+		while(curr!=null && count<k) {
+			count++;
+			next=curr.next;
+			curr.next=prev;
+			prev=curr;
+			curr=next;
+		}
+		head.next=reverseKGroup(curr,k);
+		return prev;
+		
+	}
+	public static boolean hasKElement(Node<Integer>head,int k) {
+		int count=0;
+		while(head!=null && count<k) {
+			count++;
+			head=head.next;
+			
+		}
+		return count==k;
+	}
+	
+	public static Node<Integer> swapNodeValue(Node<Integer> head,int k){
+		Node<Integer>first=head;
+		for(int i=1;i<k;i++) {
+			first=first.next;
+		}
+		Node<Integer>fast=head;
+		for(int i=0;i<k;i++) {
+			fast=fast.next;
+			
+		}
+		Node<Integer>slow=head;
+		while(fast!=null) {
+			slow=slow.next;
+			fast=fast.next;
+		}
+		int val=first.data;
+		first.data=slow.data;
+		slow.data=val;
+		return head;
 	}
 	
 	
@@ -517,8 +718,19 @@ public class linkedlistUse {
 //		head=moveLasttoHead(head);
 //		head=reverseTwo(head,1,2);
 //		DoubleNode ans=reverseHeadTail(head);
-		Node<Integer>ans=removeElmement(head, 3);
-		print(ans);
+//		Node<Integer>ans=removeElmement(head, 3);
+//		head=removeDuplicate(head);
+//		head=sort012(head);
+//		DoubleNode rev=reverseLLHeadTail(head);
+//		head=reorderList(head);
+//		head=removeRightSmaller(head);
+//		Node<Integer>head1=takeInput();
+//		head=mergeSortedBetter(head, head1);
+//		head=addTwoNumber(head, head1);
+//		head=doubleNumber(head);
+//		head=reverseKGroup(head, 3);
+		head=swapNodeValue(head, 2);
+		print(head);
 	}
 
 }
