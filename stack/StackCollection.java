@@ -263,6 +263,27 @@ public class StackCollection {
 		System.out.println(list);
 	}
 	
+	public static void longestValidParentheses() {
+		String s=")()())";
+		Stack<Integer>stack=new Stack<>();
+		stack.push(-1);
+		int len=0;
+		for(int i=0;i<s.length();i++) {
+			char ch=s.charAt(i);
+			if(ch=='(') {
+				stack.push(i);
+			}else {
+				stack.pop();
+				if(stack.isEmpty()) {
+					stack.push(i);
+				}else {
+					len=Math.max(len,i-stack.peek());
+				}
+			}
+		}
+		System.out.println(len);
+	}
+	
 	
 
 	
@@ -277,9 +298,9 @@ public class StackCollection {
 //		System.out.println(res);
 //		int arr[]= {1, 5, 0, 3, 4, 5};
 //		previousGreater(arr);
-		nextGreater(arr);
+//		nextGreater(arr);
 //		System.out.println(Reduce(s));
-		
+		longestValidParentheses();
 //	}
 		
 		
