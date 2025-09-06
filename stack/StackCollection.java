@@ -77,13 +77,8 @@ public class StackCollection {
 	return false;
 	}
 	
-	public static int minimumReversal(String s) {
-		if(s.length()==0) {
-			return 0;
-		}
-		if(s.length()%2==1) {
-			return -1;
-		}
+	public static void minimumReversal() {
+		String s="]]][[[[";
 		Stack<Character> stack=new Stack<>();
 		for(int i=0;i<s.length();i++) {
 			char ch=s.charAt(i);
@@ -100,7 +95,7 @@ public class StackCollection {
 			}
 		}
 		int count=0;
-		while(!stack.isEmpty()) {
+		while(!stack.isEmpty() && stack.size()>1) {
 			char c1=stack.pop();
 			char c2=stack.pop();
 			if(c1!=c2)
@@ -109,7 +104,7 @@ public class StackCollection {
 				count++;
 				
 		}
-		return count;
+		System.out.println(count);
 	}
 	
 	public static int minAdd(String s) {
@@ -197,6 +192,7 @@ public class StackCollection {
 		}
 		return ans;
 	}
+	
 			
 	public static void previousGreater(int arr[]) {
 		Stack<Integer> stack=new Stack<>();
@@ -284,13 +280,98 @@ public class StackCollection {
 		System.out.println(len);
 	}
 	
+	public static void evaluatePostfix() {
+		String arr[]= {"10","6","9","3","+","-11","*","/","*","17","+","5","+"};
+		int ans=0;
+		Stack<Integer>stack=new Stack<>();
+		for(int i=0;i<arr.length;i++) {
+			if("+-*/".indexOf(arr[i])!=-1) {
+				int second=stack.pop();
+				int first=stack.pop();
+				int res=0;
+				if(arr[i].equals("+")) {
+					res=first+second;
+				}
+				else if(arr[i].equals("-")) {
+					res=first-second;
+				}else if (arr[i].equals("*")) res=first*second;
+				else {
+					if(second==0) second=1;
+					res=first/second;
+				}
+				stack.push(res);
+			}else {
+				stack.push(Integer.parseInt(arr[i]));
+			}
+		}
+		System.out.println(stack.pop());
+		
+	}
+	
+	public static void minInsertionTOBalance() {
+		String s="((((((";
+		int n=s.length();
+		int ans=0;
+		Stack<Character>stack=new Stack<>();
+		for(int i=0;i<n;i++) {
+			char ch=s.charAt(i);
+			if(ch=='(') stack.push(ch);
+			else {
+				if(stack.isEmpty()) {
+					if(i+1<=n-1 && s.charAt(i+1)==')') {
+						ans++;
+						i++;
+					}else ans=ans+2;
+				}else {
+					if(i+1<=n-1 && s.charAt(i+1)==')') {
+						stack.pop(); i++;
+					}else {
+						ans++; stack.pop();
+					}
+					
+				}
+					
+			}
+			
+		}
+		ans=ans+stack.size()*2;
+		System.out.println(ans);
+	}
+	
+	public static void min() {
+		String s="((((((";
+		int n=s.length();
+		int ans=0;
+		int count=0;
+		for(int i=0;i<n;i++) {
+			char ch=s.charAt(i);
+			if(ch=='(') count++;
+			else {
+				if(count==0) {
+					if(i+1<=n-1 && s.charAt(i+1)==')') {
+						ans++;
+						i++;
+					}else ans=ans+2;
+				}else {
+					if(i+1<=n-1 && s.charAt(i+1)==')') {
+						count--;; i++;
+					}else {
+						ans++; count--;;
+					}
+					
+				}
+			}
+		}
+		System.out.println(ans+count*2);
+		
+	}
 	
 
 	
 	public static void main(String[] args) {
 		String s= "geegsforgeeeks";
 		int arr[]= {5,15,10,8,6,12,9,18};
-//	int count=minimumReversal(s);
+//		minimumReversal();
 //		System.out.println(count);
 //		int add=minAdd(s);
 //		System.out.println(add);
@@ -300,7 +381,10 @@ public class StackCollection {
 //		previousGreater(arr);
 //		nextGreater(arr);
 //		System.out.println(Reduce(s));
-		longestValidParentheses();
+//		longestValidParentheses();
+//		evaluatePostfix();
+//		minInsertionTOBalance();
+		min();
 //	}
 		
 		
