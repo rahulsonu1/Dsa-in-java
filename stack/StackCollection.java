@@ -366,6 +366,49 @@ public class StackCollection {
 		
 	}
 	
+	public static void decodedString() {
+		String s=""; int k=1;
+		StringBuilder sb=new StringBuilder();
+		for(int i=0;i<s.length();i++) {
+			char ch=s.charAt(i);
+			if(!Character.isDigit(ch)) {
+				sb.append(ch);
+			}else {
+				String t=sb.toString();
+				System.out.println(t);
+				int num=(int) ch-'0';
+				System.out.println(num);
+				for(int j=1;j<num;j++) {
+					sb.append(t);
+				}
+			}
+		}
+//		System.out.println(sb);
+		System.out.println(sb.charAt(k-1));
+	}
+	
+	public static void gasFill() {
+		int[] gas = {1, 2, 3, 4, 5};
+        int[] cost = {3, 4, 5, 1, 2};
+        int n=gas.length;
+        for(int i=0;i<n;i++) {
+        	int totalgas=0;
+        	boolean flag=true;
+        	
+        	for(int j=i;j<n;j++) {
+        		int index=(i+j)%n;
+        		totalgas=totalgas+gas[i]-cost[index];
+        		if(totalgas<0) {
+        			flag=false;
+        			break;
+        			
+        		}
+        	}
+        	if(flag) {
+        		System.out.println(i);
+        	}
+        }
+	}
 
 	
 	public static void main(String[] args) {
@@ -384,7 +427,9 @@ public class StackCollection {
 //		longestValidParentheses();
 //		evaluatePostfix();
 //		minInsertionTOBalance();
-		min();
+//		min();
+//		decodedString();
+		gasFill();
 //	}
 		
 		
