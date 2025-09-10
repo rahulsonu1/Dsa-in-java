@@ -409,6 +409,59 @@ public class StackCollection {
         	}
         }
 	}
+	public static void countPermutationGreater() {
+		int n=100;
+		int count=0;
+		
+		Stack<Integer>stack=new Stack<>();
+		for(int i=1;i<=9;i++) {
+			if(i<=n) {
+				stack.push(i);
+				count++;
+			}
+			while(!stack.isEmpty()) {
+				int top=stack.pop();
+				for(int j=top%10;j<=9;j++) {
+					int x=top*10+j;
+					if(x<=n) {
+						stack.push(x);
+						count++;
+					}
+				}
+			}
+		}
+		System.out.println(stack.size());
+		System.out.println(count);
+	}
+	
+	public static void celebrity() {
+		int arr[][]= {{ 0, 1, 0 },
+                { 0, 0, 0 },
+                { 0, 1, 0 } };
+		Stack<Integer>stack=new Stack<>();
+		for(int i=0;i<arr.length;i++) {
+			stack.push(i);
+		}
+		while(stack.size()>=2) {
+			int i=stack.pop();
+			int j=stack.pop();
+			if(arr[i][j]==1) {
+				stack.push(j);
+			}else {
+				stack.push(i);
+			}
+		}
+		int pot=stack.pop();
+		for(int i=0;i<arr.length;i++) {
+			if(i!=pot) {
+				if(arr[i][pot]==0||arr[pot][i]==1) {
+					System.out.print("None");
+					break;
+				}
+			}
+		}
+		System.out.println(pot);
+	}
 
 	
 	public static void main(String[] args) {
@@ -429,7 +482,9 @@ public class StackCollection {
 //		minInsertionTOBalance();
 //		min();
 //		decodedString();
-		gasFill();
+//		gasFill();
+//		countPermutationGreater();
+		celebrity();
 //	}
 		
 		
