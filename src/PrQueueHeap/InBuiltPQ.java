@@ -149,7 +149,7 @@ public class InBuiltPQ {
 //		System.out.println(ticketTime(arr, 3));
 //		System.out.println(mergeKsortedArray(arrList));
 //		System.out.println(kSmallest(arr, 3));
-		System.out.println(mergeKArray(a, 3));
+//		System.out.println(mergeKArray(a, 3));
 		
 	}
 

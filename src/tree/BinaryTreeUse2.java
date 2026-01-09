@@ -152,18 +152,101 @@ public class BinaryTreeUse2 {
 		
 	}
 	
-	public static PairReturn constLL(BinaryTree<Integer> root) {
+	public static void zigzagTraversal(BinaryTree<Integer> root){
+		ArrayList<ArrayList<Integer>>list=new ArrayList<>();
 		if(root==null) {
-			PairReturn p=new PairReturn();
-			return p;
+			return ;
 		}
-		
+		Queue<BinaryTree<Integer>> queue=new LinkedList<>();
+		queue.add(root);
+		boolean flag=false;
+		while(!queue.isEmpty()) {
+			int size=queue.size();
+			ArrayList<Integer>ans=new ArrayList<>();
+			Stack<Integer>stack =new Stack<>();
+			for(int i=0;i<size;i++) {
+				BinaryTree<Integer> front=queue.poll();
+				if(flag) {
+					stack.push(front.data);
+				}
+				else {
+					ans.add(front.data);
+				}
+				if(front.left!=null) queue.add(front.left);
+				if(front.right!=null) queue.add(front.right);
+			}
+			flag=!flag;
+			while(!stack.isEmpty()) {
+				ans.add(stack.pop());
+			}
+			list.add(ans);
+		}
+		System.out.println(list);
+	}
+	public static void levelSuccessor(BinaryTree<Integer> root,int key) {
+		if(root==null) {
+			return ;
+		}
+		Queue<BinaryTree<Integer>> queue=new LinkedList<>();
+		queue.add(root);
+		while(!queue.isEmpty()) {
+			int size=queue.size();
+			for(int i=0;i<size;i++) {
+				BinaryTree<Integer> front=queue.poll();
+				if(front.data==key) {
+					if(!queue.isEmpty() && queue.peek()!=null) {
+						System.out.println(queue.poll().data);
+					}else {
+						System.out.println("null");
+					}
+					return;
+				}
+				if(front.left!=null) queue.add(front.left);
+				if(front.right!=null) queue.add(front.right);
+			}
+		}
 	}
 	
+	public static void isCousin(BinaryTree<Integer>root,int x,int y) {
+		if(root==null) { System.out.println("False"); return;}
+		int levelX=levelOfNode(root, x, 0);
+		int levelY=levelOfNode(root, y, 0);
+		if(levelX==-1||levelY==-1) {
+			System.out.println("False");
+			return ;
+		}
+	    if((levelX == levelY) && !isSibling(root, x, y)){
+	    	System.out.println("True");
+	    }
+
+	}
+	public static int levelOfNode(BinaryTree<Integer>root,int x,int level) {
+		if(root==null) return -1;
+		if(root.data==x) return level;
+		
+		int leftans=levelOfNode(root.left, x, level+1);
+		if(leftans!=-1) {
+			return leftans;
+		}
+		return levelOfNode(root.right,x,level+1);
+	}
+	public static Boolean isSibling(BinaryTree<Integer>root,int x,int y) {
+		if(root==null) return false;
+		if(root.left!=null && root.right!=null) {
+			if((root.left.data==x && root.right.data==y)||(root.right.data==x && root.left.data==y)) {
+				return true;
+			}
+		}
+		return isSibling(root.left, x, y)||isSibling(root.right, x, y);
+	}
 	
 	public static void main(String[] args) {
 		BinaryTree<Integer> root=BinaryTreeUse.takeinputLevelwise();
 		BinaryTreeUse.printLevewise(root);
+		isCousin(root, 2, 3);
+//		zigzagTraversal(root);
+//		levelSuccessor(root, 3);
+		
 //		System.out.println(sizeof(root));
 //		lineByLine(root);
 //		printSpiral(root);

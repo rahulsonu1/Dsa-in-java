@@ -773,11 +773,11 @@ public class BinaryTreeUse {
 //	printNodeWithoutSibling(root);
 //	root=mirrorTree(root);
 //	printTreeDetailed(root);
-	BalancedTreeReturn ans=isBalancedBetter(root);
-	System.out.println(ans.isBalanced);
+//	BalancedTreeReturn ans=isBalancedBetter(root);
+//	System.out.println(ans.isBalanced);
 //	System.out.println(diameter(root));
-	Pair p=diameterBetter(root);
-	System.out.println(p.diameter +" "+p.height);
+//	Pair p=diameterBetter(root);
+//	System.out.println(p.diameter +" "+p.height);
 //	int inorder[]= {4 ,2, 7 ,5 ,1 ,8 ,6,3};
 //	int postorder[]= {4, 7, 5, 2 ,8 ,6 ,3 ,1};
 //	BinaryTree<Integer> root1=constTreeFromPreInorder(inorder,preorder,0,inorder.length-1,0,preorder.length-1);
