@@ -3,6 +3,7 @@ package tree;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -240,10 +241,109 @@ public class BinaryTreeUse2 {
 		return isSibling(root.left, x, y)||isSibling(root.right, x, y);
 	}
 	
+	public static void rightSideView(BinaryTree<Integer>root) {
+		if(root==null) return;
+		Queue<BinaryTree<Integer>>queue=new LinkedList<>();
+		queue.add(root);
+		ArrayList<Integer>list=new ArrayList<>();
+		while(!queue.isEmpty()) {
+			int size=queue.size();
+			for(int i=0;i<size;i++) {
+				BinaryTree<Integer>front=queue.poll();
+				if(i==size-1) {
+					list.add(front.data);
+				}
+				if(front.left!=null) queue.add(front.left);
+				if(front.right!=null) queue.add(front.right);
+			}
+		}
+		System.out.println(list);
+	}
+	
+	public static void verticalTraversal(BinaryTree<Integer>root) {
+		HashMap<Integer,ArrayList<Integer>>map=new HashMap<>();
+		Queue<VerticalPair>queue=new LinkedList<>();
+		queue.add(new VerticalPair(root, 0));
+		while(!queue.isEmpty()) {
+			int size=queue.size();
+			for(int i=0;i<size;i++) {
+				VerticalPair front=queue.poll();
+				if(!map.containsKey(front.hl)) {
+					ArrayList<Integer>list=new ArrayList<>();
+					list.add(front.node.data);
+					map.put(front.hl,list);
+				}else {
+					ArrayList<Integer>list=map.get(front.hl);
+					list.add(front.node.data);
+					map.put(front.hl,list);
+				}
+				if(front.node.left!=null) {
+					queue.add(new VerticalPair(front.node.left, front.hl-1));
+				}
+				if(front.node.right!=null) {
+					queue.add(new VerticalPair(front.node.right,front.hl+1));
+				}
+			}
+			
+		}
+		System.out.println(map);
+	}
+	public static void widthOftree(BinaryTree<Integer>root,int hl,int[] minMax) {
+		if(root==null) return;
+		minMax[0]=Math.min(minMax[0],hl);
+		minMax[1]=Math.max(minMax[1], hl);
+		widthOftree(root.left, hl-1, minMax);
+		widthOftree(root.right, hl+1, minMax);
+	}
+	
+	public static void bottomview(BinaryTree<Integer> root) {// similar for top view
+		int minMax[]=new int[2];
+		widthOftree(root, 0, minMax);
+		int width=minMax[1]-minMax[0]+1;
+		Queue<VerticalPair> queue=new LinkedList<>();
+		queue.add(new VerticalPair(root, Math.abs(minMax[0])));
+		ArrayList<Integer>list=new ArrayList<>();
+		for(int i=0;i<width;i++) list.add(0);
+		while(!queue.isEmpty()) {
+			int size=queue.size();
+			for(int i=0;i<size;i++) {
+				VerticalPair front=queue.poll();
+				list.set(front.hl, front.node.data);
+				if(front.node.left!=null) {
+					queue.add(new VerticalPair(front.node.left, front.hl-1));
+				}
+				if(front.node.right!=null) {
+					queue.add(new VerticalPair(front.node.right,front.hl+1));
+				}
+			}
+		}
+		System.out.println(list);
+	}
+	public static void diagonalTraversal(BinaryTree<Integer>root) {
+		ArrayList<Integer>list=new ArrayList<>();
+		Queue<BinaryTree<Integer>>queue=new LinkedList<>();
+		queue.add(root);
+		while(!queue.isEmpty()) {
+			BinaryTree<Integer>front=queue.poll();
+			BinaryTree<Integer> curr=front;
+			while(curr!=null) {
+				list.add(curr.data);
+				if(curr.left!=null) {
+					queue.add(curr.left);
+				}
+				curr=curr.right;
+			}
+		}
+		System.out.println(list);
+		
+	}
+	
+	
+	
 	public static void main(String[] args) {
 		BinaryTree<Integer> root=BinaryTreeUse.takeinputLevelwise();
 		BinaryTreeUse.printLevewise(root);
-		isCousin(root, 2, 3);
+//		isCousin(root, 2, 3);
 //		zigzagTraversal(root);
 //		levelSuccessor(root, 3);
 		
@@ -252,7 +352,10 @@ public class BinaryTreeUse2 {
 //		printSpiral(root);
 //		printspiralTwoS(root);
 //		pathtoK(root, 22, "");
-
+//		rightSideView(root);
+//		verticalTraversal(root);
+//		bottomview(root);
+		diagonalTraversal(root);
 	}
 
 }
