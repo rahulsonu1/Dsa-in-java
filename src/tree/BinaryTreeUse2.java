@@ -337,8 +337,80 @@ public class BinaryTreeUse2 {
 		System.out.println(list);
 		
 	}
+	static int sum=0;
 	
-	
+	public static int maximumPathSum(BinaryTree<Integer> root) {
+		if(root==null) return 0;
+		int leftAns=Math.max(0, maximumPathSum(root.left));
+		int rightAns=Math.max(0,maximumPathSum(root.right));
+		sum=Math.max(sum,leftAns+rightAns+root.data);
+		System.out.println(sum);
+		return Math.max(leftAns, rightAns)+root.data;
+		
+	}
+	public static void pathSum2(BinaryTree<Integer>root, int target) {
+		ArrayList<ArrayList<Integer>>list=new ArrayList<>();
+		ArrayList<Integer>curr=new ArrayList<>();
+		pathSum2Helper(root, target,curr,list);
+		System.out.println(list);
+		
+	}
+	public static void  pathSum2Helper(BinaryTree<Integer>root,int target,ArrayList<Integer>curr,ArrayList<ArrayList<Integer>>list){
+		if(root==null) {
+			return ;
+		}
+		curr.add(root.data);
+		if(root.left==null && root.right==null && root.data==target ) {
+			list.add(new ArrayList<Integer>(curr));
+		}else {
+		pathSum2Helper(root.left, target-root.data, curr, list);
+		pathSum2Helper(root.right, target-root.data, curr, list);
+		}
+		curr.remove(curr.size()-1);
+	}
+	public static BinaryTree<Integer> cousin2(BinaryTree<Integer>root){
+		ArrayList<Integer>list=new ArrayList<>();
+		Queue<BinaryTree<Integer>>queue=new LinkedList<>();
+		queue.add(root);
+		while(!queue.isEmpty()) {
+			int size=queue.size();
+			int sum=0;
+			for(int i=0;i<size;i++) {
+				BinaryTree<Integer>front=queue.poll();
+				sum=sum+front.data;
+				if(front.left!=null) {
+					queue.add(front.left);
+				}
+				if(front.right!=null) {
+					queue.add(front.right);
+				}
+			}
+			list.add(sum);
+		}
+		queue.clear();
+		queue.add(root);
+		root.data=0;
+		int level=1;
+		while(!queue.isEmpty()) {
+			int size=queue.size();
+			for(int i=0;i<size;i++) {
+				BinaryTree<Integer>front=queue.poll();
+				int siblingSum=(front.left!=null?front.left.data:0)+(front.right!=null?front.right.data:0);
+				if(front.left!=null) {
+					front.left.data=list.get(level)-siblingSum;
+					queue.add(front.left);
+				}
+				if(front.right!=null) {
+					front.right.data=list.get(level)-siblingSum;
+					queue.add(front.right);
+				}
+				
+			}
+			level++;
+		}
+		return root;
+	}
+
 	
 	public static void main(String[] args) {
 		BinaryTree<Integer> root=BinaryTreeUse.takeinputLevelwise();
@@ -355,7 +427,13 @@ public class BinaryTreeUse2 {
 //		rightSideView(root);
 //		verticalTraversal(root);
 //		bottomview(root);
-		diagonalTraversal(root);
+//		diagonalTraversal(root);
+//		maximumPathSum(root);
+//		pathSum2(root, 22);
+//		root=cousin2(root);
+//		BinaryTreeUse.printLevewise(root);
+
+		
 	}
 
 }
