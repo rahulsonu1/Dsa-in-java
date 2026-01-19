@@ -369,40 +369,34 @@ public class BinaryTreeUse {
 		return root;
 	}
 	
-	public static BinaryTree<Integer> constTreeFromPostInorder(int inorder[], int postorder[],int startiIn,int endiIn,int startiPost,int endiPost){
-		if(endiIn<startiIn) {
+	public static BinaryTree<Integer> constTreeFromPostInorder(int inorder[], int postorder[],int startInorder ,int endInorder,int startPostorder,int  endPostorder ){
+		if(startInorder>endInorder) {
 			return null;
 		}
-		int rootdata=postorder[endiPost];
-		BinaryTree<Integer> root=new BinaryTree<Integer>(rootdata);
+		int rootData=postorder[endPostorder];
+		BinaryTree<Integer>root=new BinaryTree<Integer>(rootData);
+
 		int rootIndex=-1;
-		for(int i=startiIn;i<=endiIn;i++) {
-			if(inorder[i]==rootdata) {
+		for(int i=startInorder;i<=endInorder;i++) {
+			if(rootData==inorder[i]) {
 				rootIndex=i;
 				break;
 			}
 		}
-		int siInLeft=startiIn;
-		int siPostLeft=startiPost;
-		int endiInLeft=rootIndex-1;
+		int startInorderLeft=startInorder;
+		int endInorderLeft=rootIndex-1;
+		int startInorderRight=rootIndex+1;
+		int endInorderRight=endInorder;
 		
-		int siInRight=rootIndex+1;
-	
-		int endiInRight=endiIn;
-		int endiPostRight=endiPost-1;
-		
-//		int lengthOfLeftSubtree=endiInLeft-siInLeft;
-		
-	
-		int endiPostLeft=rootIndex+;
-		int siPostRight=rootIndex+siInRight;
-		
-		BinaryTree<Integer> right=constTreeFromPostInorder(inorder, postorder, siInRight,endiInRight,siPostRight,endiPostRight);
-		BinaryTree<Integer> left= constTreeFromPostInorder(inorder, postorder, siInLeft,endiInLeft,siPostLeft,endiPostLeft);
-		root.right=right;
-		root.left=left;
-		
+		int startPostorderLeft=startPostorder;
+		int lengthOfLeftStructure=endInorderLeft-startInorderLeft+1;
+		int endPostorderLeft=startPostorder+lengthOfLeftStructure-1;
+		int startPostorderRight=endPostorderLeft+1;
+		int endPostorderRight=endPostorder-1;
+		root.left=constTreeFromPostInorder(inorder, postorder, startInorderLeft, endInorderLeft, startPostorderLeft, endPostorderLeft);
+		root.right=constTreeFromPostInorder(inorder, postorder, startInorderRight, endInorderRight, startPostorderRight, endPostorderRight);
 		return root;
+		
 	}
 	
 	public static void printLevelWiseinNextLine(BinaryTree<Integer> root) {
@@ -767,8 +761,8 @@ public class BinaryTreeUse {
 //	right.right=right1;
 //	left.left=left1;
 //	BinaryTree<Integer> root=takeInputBetter(true,0,true);
-	BinaryTree<Integer> root=takeinputLevelwise();
-	printLevewise(root);
+//	BinaryTree<Integer> root=takeinputLevelwise();
+//	printLevewise(root);
 //	printNodeAtDepthK(root, 2);
 //	printNodeWithoutSibling(root);
 //	root=mirrorTree(root);
@@ -778,11 +772,11 @@ public class BinaryTreeUse {
 //	System.out.println(diameter(root));
 //	Pair p=diameterBetter(root);
 //	System.out.println(p.diameter +" "+p.height);
-//	int inorder[]= {4 ,2, 7 ,5 ,1 ,8 ,6,3};
-//	int postorder[]= {4, 7, 5, 2 ,8 ,6 ,3 ,1};
+	int inorder[]= {9,3,15,20,7};
+	int postorder[]= {9,15,7,20,3};
 //	BinaryTree<Integer> root1=constTreeFromPreInorder(inorder,preorder,0,inorder.length-1,0,preorder.length-1);
-//	BinaryTree<Integer> root1=constTreeFromPostInorder(inorder, postorder, 0, inorder.length-1, 0,postorder.length-1);
-//	printLevewise(root1);
+	BinaryTree<Integer> root1=constTreeFromPostInorder(inorder, postorder, 0, inorder.length-1, 0,postorder.length-1);
+	printLevewise(root1);
 //	printLevelWiseinNextLine(root);
 //	nodeAtDisHelper(root, 2, 5);
 //	System.out.println(searchInBST(root, 2));
@@ -804,6 +798,7 @@ public class BinaryTreeUse {
 //	System.out.println(isSumTree(root));
 //	replaceDataWithHeight(root, 0);
 //	removeLeafNode(root);
-	printLevewise(root);
+	
+//	printLevewise(root);
 }
 }

@@ -1,5 +1,5 @@
 package tree;
-
+import tree.BinaryTreeUse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -410,6 +410,197 @@ public class BinaryTreeUse2 {
 		}
 		return root;
 	}
+	static int maxDistance;
+	public static void burnTree(BinaryTree<Integer> root, int target) {
+		maxDistance=-110;
+		burnHelper(root, target);
+		System.out.println(maxDistance);
+	}
+	public static int burnHelper(BinaryTree<Integer> root,int target) {
+		if(root==null) return -1;
+		if(root.data==target) {
+			maxDistance=Math.max(maxDistance,maxDownDistance(root));
+			return 0;
+		}
+		int ld=burnHelper(root.left, target);
+		if(ld!=-1) {
+			maxDistance=Math.max(maxDistance,ld+1+maxDownDistance(root.right));
+			return ld+1;
+		}
+		int rd=burnHelper(root.right, target);
+		if(rd!=-1) {
+			maxDistance=Math.max(maxDistance,rd+1+maxDownDistance(root.left));
+			return rd+1;
+		}
+		return -1;
+	}
+	public static int maxDownDistance(BinaryTree<Integer>root) {
+		if(root==null) return 0;
+		int leftAns=maxDownDistance(root.left);
+		int rightAns=maxDownDistance(root.right);
+
+		return Math.max(leftAns, rightAns)+1;
+	}
+	public static BinaryTree<Integer> lca(BinaryTree<Integer>root,int a,int b){
+		if(root==null||root.data==a||root.data==b) {
+			return root;
+		}
+		BinaryTree<Integer>leftAns=lca(root.left, a, b);
+		BinaryTree<Integer>rightAns=lca(root.right,a,b);
+		if(leftAns!=null && rightAns!=null) {
+			return root;
+		}
+		if(leftAns==null)return rightAns;
+		return leftAns;
+	}
+	public static int findDistanceHelper(BinaryTree<Integer>root,int a,int distance) {
+		if(root==null)return -1;
+		if(root.data==a) return distance;
+		int leftAns=findDistanceHelper(root.left, a, distance+1);
+		if(leftAns!=-1)return distance;
+		return findDistanceHelper(root.right, a, distance+1);
+	}
+	
+	public static void minDistanceBetweenNode(BinaryTree<Integer>root,int a,int b) {
+		BinaryTree<Integer>lca=lca(root,a,b);
+		int leftAns=findDistanceHelper(lca, a, 0);
+		int rightAns=findDistanceHelper(lca, b, 0);
+		System.out.println(leftAns+rightAns);
+		
+	}
+	public static void boundaryTraversal(BinaryTree<Integer>root) {
+		ArrayList<Integer>list=new ArrayList<>();
+		list.add(root.data);
+		BinaryTree<Integer>curr=root.left;
+		while(curr!=null) {
+			if(!(curr.left==null && curr.right==null)) {
+				list.add(curr.data);
+			}
+			
+			if(curr.left!=null) {
+				curr=curr.left;
+			}else {
+				curr=curr.right;
+			}
+		}
+		Stack<BinaryTree<Integer>> stack = new Stack<>();
+		if (root != null) {
+		    stack.push(root);
+		}
+		while (!stack.isEmpty()) {
+		    BinaryTree<Integer> current = stack.pop();
+		    
+		    if (current.left == null && current.right == null && current!=root) {
+		        list.add(current.data);
+		    }
+		    if (current.right != null) {
+		        stack.push(current.right);
+		    }
+		    if (current.left != null) {
+		        stack.push(current.left);
+		    }
+		}
+		curr=root.right;
+		Stack<Integer>st=new Stack<Integer>();
+		while(curr!=null) {
+			if(!(curr.left==null && curr.right==null)) {
+				st.push(curr.data);
+			}
+			
+			curr=curr.right!=null?curr.right:curr.left;
+		}
+		while(!st.isEmpty()) list.add(st.pop());
+		System.out.println(list);
+		
+	}
+	public static void maximumWidth(BinaryTree<Integer>root) {
+		Queue<VerticalPair>queue=new LinkedList<>();
+		queue.add(new VerticalPair(root,1));
+		int max=0;
+		while(!queue.isEmpty()) {
+			int size=queue.size();
+			int first =0;
+			int last=0;
+			for(int i=0;i<size;i++) {
+				VerticalPair front=queue.poll();
+					if(i==0) {
+						first=front.hl;
+					}if(i==size-1) {
+						last=front.hl;
+					}
+					
+					if(front.node.left!=null) {
+						queue.add(new VerticalPair(front.node.left, front.hl*2));
+					}
+					if(front.node.right!=null) {
+						queue.add(new VerticalPair(front.node.right,front.hl*2+1));
+					}
+					
+			}
+			
+			if(last==first) {
+				max=Math.max(1, max);
+			}else {
+				max=Math.max(last-first+1, max);
+			}
+		}
+		System.out.println(max);
+	}
+	
+	public static boolean isIncreasing(int arr[],int size) {
+		if(arr[0]%2!=1) return false;
+		for(int i=1;i<size;i++) {
+			if(arr[i]<=arr[i-1] || arr[i]%2!=1) {
+				return false;
+			}
+		}
+		return true;
+	}
+	public static  boolean isDecreasing(int arr[],int size) {
+		if(arr[0]%2!=0) return false;
+		for(int i=1;i<size;i++) {
+			if(arr[i]>=arr[i-1] || arr[i]%2!=0) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static boolean evenOddTree(BinaryTree<Integer>root) {
+		
+		boolean even=true;
+		Queue<BinaryTree<Integer>>queue=new LinkedList<>();
+		queue.add(root);
+		while(!queue.isEmpty()) {
+			int size=queue.size();
+			int arr[]=new int[size];
+			for(int i=0;i<size;i++) {
+				BinaryTree<Integer>front=queue.poll();
+				arr[i]=front.data;
+				if(front.left!=null) queue.add(front.left);
+				if(front.right!=null) queue.add(front.right);
+			}
+			if(even) { 
+				if(!isIncreasing(arr, size)) {
+					return false;
+				}
+			}
+			if(!even) {
+				if(!isDecreasing(arr, size)) {
+					return false;
+				}
+			}
+			even=!even;
+			
+		}
+		return true;
+	}
+	
+	
+	
+	
+	
+
 
 	
 	public static void main(String[] args) {
@@ -418,7 +609,6 @@ public class BinaryTreeUse2 {
 //		isCousin(root, 2, 3);
 //		zigzagTraversal(root);
 //		levelSuccessor(root, 3);
-		
 //		System.out.println(sizeof(root));
 //		lineByLine(root);
 //		printSpiral(root);
@@ -432,6 +622,12 @@ public class BinaryTreeUse2 {
 //		pathSum2(root, 22);
 //		root=cousin2(root);
 //		BinaryTreeUse.printLevewise(root);
+//		burnTree(root, 3);
+//		minDistanceBetweenNode(root, maxDistance, maxDistance);
+//		boundaryTraversal(root);
+//		maximumWidth(root);
+//		System.out.println(evenOddTree(root));
+		
 
 		
 	}
