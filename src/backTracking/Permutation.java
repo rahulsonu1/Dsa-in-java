@@ -4,7 +4,7 @@ import java.util.*;
 public class Permutation {
 
 	public static void main(String[] args) {
-		String s="AAA";
+		String s="Abc";
 		ArrayList<String>list=new ArrayList<>();
 		permutation(s, "", list);
 		System.out.println(list);

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -595,6 +596,51 @@ public class BinaryTreeUse2 {
 		}
 		return true;
 	}
+	public static BinaryTree<Integer> serializeTree(BinaryTree<Integer>root) {
+		List<String>list=new ArrayList<>();
+		Queue<BinaryTree<Integer>>queue=new LinkedList<>();
+		queue.add(root);
+		while(!queue.isEmpty()) {
+			int size=queue.size();
+			for(int i=0;i<size;i++) {
+				BinaryTree<Integer>front=queue.poll();
+				if(front!=null) {
+					list.add(String.valueOf(front.data));
+					queue.add(front.left);
+					queue.add(front.right);
+				}else {
+					list.add("#");
+				}
+			}
+		}
+		System.out.println(list);
+		BinaryTree<Integer>root1= deserialize(String.join(",",list));
+		return root1;
+		
+	}
+	public static BinaryTree<Integer> deserialize(String s){
+		String data[]=s.split(",");
+		int index=0;
+		BinaryTree<Integer>root=new BinaryTree<Integer>(Integer.parseInt(data[index++]));
+		Queue<BinaryTree<Integer>>queue=new LinkedList<>();
+		queue.add(root);
+		while(!queue.isEmpty()) {
+			BinaryTree<Integer>front=queue.poll();
+			if(!data[index].equals("#")) {
+				front.left=new BinaryTree<Integer>(Integer.parseInt(data[index]));
+				queue.add(front.left);
+			}
+			index++;
+			if(!data[index].equals("#")) {
+				front.right=new BinaryTree<Integer>(Integer.parseInt(data[index]));
+				queue.add(root.right);
+			}
+			index++;
+		}
+		return root;
+		
+		
+	}
 	
 	
 	
@@ -627,6 +673,7 @@ public class BinaryTreeUse2 {
 //		boundaryTraversal(root);
 //		maximumWidth(root);
 //		System.out.println(evenOddTree(root));
+		BinaryTreeUse.printLevewise(serializeTree(root));
 		
 
 		
