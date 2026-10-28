@@ -5,21 +5,43 @@ import java.util.Arrays;
 public class LeastComSeq {
 
 	public static void main(String[] args) {
-		String a="sea";
-		String b="eat";
-		int arr[][]=new int[a.length()+1][b.length()+1];
-		for(int i=0;i<arr.length;i++) {
-			for(int j=0;j<arr[0].length;j++) {
-				arr[i][j]=-1;
-			}
-		}
+		String a="abcde";
+		String b="ace";
+//		int arr[][]=new int[a.length()+1][b.length()+1];
+//		for(int i=0;i<arr.length;i++) {
+//			for(int j=0;j<arr[0].length;j++) {
+//				arr[i][j]=-1;
+//			}
+//		}
 //		int length=a.length()+b.length();
 //		int ans=lcs(a,b,0,0,arr);
 //		System.out.println(length-2*ans);
 //		System.out.println(ans);
+//		System.out.println(lcsI(a, b));
+//		
+//		System.out.println(lcs(a,b,0,0));
+		
 		System.out.println(lcsI(a, b));
 
 	}
+	
+	public static int lcs(String a,String b,int i,int j) {
+		if(a.length()==i||b.length()==j) return 0;
+		if(a.charAt(i)==b.charAt(j)) {
+			return 1+lcs(a,b,i+1,j+1);
+		}
+		int frd=lcs(a,b,i+1,j);
+		int brd=lcs(a,b,i,j+1);
+		return Math.max(frd, brd);
+			
+			
+	}
+	
+	
+	
+	
+	
+	
 	public static int lcsI(String a,String b) {
 		if(a.length()==0||b.length()==0) {
 			return 0;
@@ -79,7 +101,56 @@ public class LeastComSeq {
 			ans=Math.max(smallAns1, smallAns2);
 		}
 		return ans;
+	}
+	
+	public static int maxI(String a,String b) {
+		int m=a.length();
+		int n=b.length();
+		int dp[][]=new int[m][n];
 		
+		for(int i=0;i<n;i++) {
+			int prev;
+			if(i==0) prev=0; else prev=dp[0][i-1];
+			
+			if(a.charAt(0)==b.charAt(i)) {
+				prev=1;
+				dp[0][i]=prev;
+			}else {
+				dp[0][i]=prev;
+			}
+		}
+		
+		for(int i=0;i<m;i++) {
+			int prev;
+			if(i==0) prev=0; else prev=dp[i-1][0];
+			if(b.charAt(0)==a.charAt(i)) {
+				prev=1;
+				dp[i][0]=prev;
+			}else {
+				dp[i][0]=prev;
+			}
+		}
+		
+		
+		for(int i=1;i<m;i++) {
+			for(int j=1;j<n;j++) {
+				if(a.charAt(i)==b.charAt(j)) {
+					dp[i][j]=1+dp[i-1][j-1];
+				}else {
+					dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);
+				}
+			}
+		}
+		
+		System.out.println("fakofoajf");
+		
+		for(int i=0;i<m;i++) {
+			for(int j=0;j<n;j++) {
+				System.out.print(dp[i][j]+" ");
+			}
+			System.out.println();
+		}
+		return dp[m][n];
 	}
 
 }

@@ -18,7 +18,6 @@ public class CountInversion {
 		return res;
 	}
 	public static int countInversion(int arr[],int start,int mid,int end) {
-		int leftLength=mid-start+1, rightLength=end-mid+1;
 		int temp[]=new int[end-start+1];
 		
 		int res=0;

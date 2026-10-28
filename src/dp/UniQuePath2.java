@@ -12,8 +12,44 @@ public class UniQuePath2 {
 		}
 			
 		System.out.println(uPath(path, 0, 0,arr));
+		
+		System.out.println(uniquePathTab(path));
 
 	}
+	
+	public static int uniquePathTab(int arr[][]) {
+		int m=arr.length;
+		int n=arr[0].length;
+		int dp[][]=new int[m][n];
+		for(int i=0;i<m;i++) {
+			for(int j=0;j<n;j++) {
+				if(arr[i][j]==1) dp[i][j]=0;
+				else if(i==0 && j==0) dp[i][j]=1;
+				else {
+					int right=0,down=0;
+					if(i>0)
+						down=dp[i-1][j];
+					if(j>0)
+						right=dp[i][j-1];
+					dp[i][j]=down+right;
+				}
+				
+			}
+		}
+		return dp[m-1][n-1];
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public static int uPath(int arr[][],int i,int j,int path[][]) {
 		int m=arr.length;
 		int n=arr[0].length;

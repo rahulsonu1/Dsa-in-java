@@ -642,6 +642,22 @@ public class BinaryTreeUse2 {
 		
 	}
 	
+	public static void zigZagTravMAx(BinaryTree<Integer>root) {
+		Queue<BinaryTree<Integer>>queue=new LinkedList<>();
+		queue.add(root);
+		boolean isEven=true;
+		int maxSum=0;
+		while(!queue.isEmpty()) {
+			int size=queue.size();
+			
+			}
+			isEven=!isEven;
+			maxSum=Math.max(maxSum, sum);
+		}
+		System.out.println(maxSum);
+		
+	}
+	
 	
 	
 	
@@ -673,7 +689,10 @@ public class BinaryTreeUse2 {
 //		boundaryTraversal(root);
 //		maximumWidth(root);
 //		System.out.println(evenOddTree(root));
-		BinaryTreeUse.printLevewise(serializeTree(root));
+//		BinaryTreeUse.printLevewise(serializeTree(root));
+		zigZagTravMAx(root);
+		
+		
 		
 
 		

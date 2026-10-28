@@ -321,6 +321,105 @@ public class UseHashMap {
 		return list;
 	}
 	
+	public static void longestBalancedSubString2() {
+		String s="abbac";
+		HashMap<String,Integer>map=new HashMap<>();
+		map.put("0#0",-1);
+		int countA=0;
+		int countB=0;
+		int countC=0;
+		int ans=0;
+		for(int i=0;i<s.length();i++) {
+			char ch=s.charAt(i);
+			if(ch=='a')countA++;
+			else if(ch=='b')countB++;
+			else countC++;
+			
+			int diffA=countA-countB;
+			int diffB=countA-countC;
+			String key=diffA+"#"+diffB;
+			if(map.containsKey(key)) {
+				ans=Math.max(ans, i-map.get(key));
+			}else {
+				map.put(key, i);
+			}
+		}
+		System.out.println(ans);
+	}
+	
+	public static void reduceXtoZero() {
+		int arr[]= {2,3,1,1,1};
+		int x=5;
+		HashMap<Integer,Integer>map=new HashMap<>();
+		int sum=0;
+		int ans=0;
+		for(int i=0;i<arr.length;i++) sum=sum+arr[i];
+		x=sum-x;
+		sum=0;
+		for(int i=0;i<arr.length;i++) {
+			sum=sum+arr[i];
+			if(sum==x) {
+				ans=i+1;
+			}if(map.containsKey(sum-x)) {
+				ans=Math.max(ans,i-map.get(sum-x));
+				System.out.println(ans);
+			}
+			if(!map.containsKey(sum)) {
+				map.put(sum,i);
+	
+			}
+		}
+		System.out.println(arr.length-ans);
+	}
+	
+	
+	public static void maxInEleinSubset() {
+		int arr[]= {131073,65537,65537};
+		HashMap<Long,Integer>map=new HashMap<>();
+		for(int i:arr) {
+			map.put((long)i,map.getOrDefault((long)i, 0)+1);
+		}
+		System.out.println(map);
+		int ans=1;
+		for(long element :map.keySet()) {
+			if(element==1) {
+				int value=map.get(element);
+				ans=Math.max(ans,value-(value%2^1));
+			}
+			int count=0;
+			long num=element;
+			while(map.containsKey(num) && map.get(num)>1) {
+				num=num*num;
+				count=count+2;
+			}
+			if(map.containsKey(num) && map.get(num)>=1) {
+				count=count+1;
+			}else {
+				count=count-1;
+			}
+			ans=Math.max(ans, count);
+		}
+		System.out.println(ans);
+	}
+	
+	public static void fruitInBasket() {
+		int arr[]= {1,2,3,2,2};
+		int left=0;
+		HashMap<Integer,Integer>map=new HashMap<>();
+		int ans=0;
+		for(int i=0;i<arr.length;i++) {
+			map.put(arr[i],map.getOrDefault(arr[i], 0)+1);
+			while(map.size()>2) {
+				map.put(arr[left],map.get(arr[left])-1);
+				if(map.get(arr[left])==0) map.remove(arr[left]);
+				left++;
+			}
+			ans=Math.max(ans, i-left+1);
+		}
+		System.out.println(ans);
+		
+	}
+	
 	public static void main(String[] args) {
 		int a[]= {1,0,1,1};
 		int b[]= {1,2,4,5,6,8,9,0,11,34};
@@ -341,7 +440,12 @@ public class UseHashMap {
 //		findPairs();
 //		System.out.println(anagram(s, s1));
 //		System.out.println(duplicate(a, 1));
-		System.out.println(majority2(a));
+//		System.out.println(majority2(a));
+//		longestBalancedSubString2();
+//		reduceXtoZero();
+//		maxInEleinSubset();
+		fruitInBasket();
+
 		
 		
 		

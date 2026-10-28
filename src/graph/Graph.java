@@ -122,6 +122,53 @@ public class Graph {
 		return null;
 	}
 	
+	public static boolean isCycleInGraph(int arr[][],int source) {
+		record Pair(int node,int parent) {}
+		int n=arr.length;
+		boolean visited[]=new boolean[n];
+		visited[source]=true;
+		Queue<Pair>queue=new LinkedList<>();
+		queue.add(new Pair(source,-1));
+		while(!queue.isEmpty()) {
+			Pair p=queue.poll();
+			int node=p.node;
+			int parent=p.parent;
+			for(int i=0;i<n;i++) {
+				if(arr[node][i]==1) {
+					if(!visited[i]) {
+						visited[i]=true;
+						queue.add(new Pair(i,node));
+					}
+					else if(parent!=i) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static void cycleInGraphDFS(int arr[][],int source) {
+		int n=arr.length;
+		boolean visited[]=new boolean[n];
+		visited[source]=true;
+		System.out.println(cycleDFSHelper(arr, source, -1, visited, n));
+		
+	}
+	public static boolean cycleDFSHelper(int arr[][],int node,int parent ,boolean visited[],int n) {
+		for(int i=0;i<n;i++) {
+			if(arr[node][i]==1) {
+				if(!visited[i]) {
+					visited[i]=true;
+					if(cycleDFSHelper(arr, i, node, visited, n)) {
+						return true;
+					}
+				}else if(parent!=i) return true;
+			}
+		}
+		return false;
+	}
+	
 	public static void main(String args[]) {
 		Scanner sc=new Scanner(System.in);
 		int n=sc.nextInt();
@@ -133,14 +180,19 @@ public class Graph {
 			adjM[v1][v2]=1;
 			adjM[v2][v1]=1;
 		}
-//		for(int i=0;i<n;i++) {
-//			for(int j=0;j<n;j++) {
-//				System.out.print(adjM[i][j]+" ");
-//			}
-//			System.out.println();
-//		}
-		int count=0;
-		boolean visited[]=new boolean[n];
+		for(int i=0;i<n;i++) {
+			for(int j=0;j<n;j++) {
+				System.out.print(adjM[i][j]+" ");
+			}
+			System.out.println();
+		}
+		cycleInGraphDFS(adjM,0);
+		
+		
+//		System.out.println(isCycleInGraph(adjM, 0));
+		
+//		int count=0;
+//		boolean visited[]=new boolean[n];
 //		for(int i=0;i<n;i++) {
 //			if(!visited[i]) {
 //			dfTravsal(adjM,i,visited);

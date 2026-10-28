@@ -5,14 +5,13 @@ import java.util.Arrays;
 public class LootHouse2 {
 
 	public static void main(String[] args) {
-		int arr[]= {1};
+		int arr[]= {1,2,3,1};
 		int ans[]=new int[arr.length+1];
 		Arrays.fill(ans, -1);
 		int ans1=loot(arr,0,arr.length-2,ans);
 		Arrays.fill(ans, -1);
 		int ans2=loot(arr,1,arr.length-1,ans);
-		System.out.println(ans1);
-		System.out.println(ans2);
+		System.out.print(Math.max(ans1, ans2));
 		
 
 	}
